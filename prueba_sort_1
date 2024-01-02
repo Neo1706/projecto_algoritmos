@@ -1,0 +1,31 @@
+import unittest
+import time
+
+
+
+
+def library_sort(arr):
+    n = len(arr)
+    gap = 1
+
+    while gap < n:
+        for i in range(gap, n):
+            temp = arr[i]
+            j = i
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j -= gap
+            arr[j] = temp
+            print(arr)
+
+        # Actualizar el valor de gap usando la secuencia de Marcin Ciura
+        if gap < 8:
+            gap = 3 * gap + 1
+        else:
+            gap = (gap * 4 // 5)
+
+# Ejemplo de uso
+arr = [64, 25, 12, 22, 11,]
+library_sort(arr)
+print("Arreglo ordenado:", arr)
+

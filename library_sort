@@ -1,0 +1,57 @@
+def library_sort(index):
+    n = len(index)
+    lib_size = 1
+    index_pos = 1
+    target_lib = 0
+    library = [[] for _ in range(2)]  # Usamos listas en lugar de enteros
+    gaps = [0] * (n + 1)
+    numbered = [False] * (n + 1)
+    library[target_lib].append(index[0])
+
+    while index_pos < n:
+        # binary search
+        insert = next(
+            (i for i, x in enumerate(library[target_lib]) if x >= index[index_pos]),
+            lib_size,
+        )
+
+        # if there is no gap to insert a new index ...
+        if numbered[insert]:
+            prov_size = 0
+            next_target_lib = not target_lib
+
+            # update library and clear gaps
+            for i in range(n + 1):
+                if numbered[i]:
+                    library[next_target_lib].append(gaps[i])
+                    prov_size += 1
+                    numbered[i] = False
+
+                if i < lib_size:
+                    library[next_target_lib].append(library[target_lib][i])
+                    prov_size += 1
+
+            target_lib = next_target_lib
+            lib_size = prov_size - 1
+        else:
+            numbered[insert] = True
+            gaps[insert] = index[index_pos]
+            index_pos += 1
+
+    index_pos_for_output = 0
+    result = []
+    for i in range(n):
+        if numbered[i]:
+            result.append(gaps[i])
+            index_pos_for_output += 1
+
+        if i < lib_size:
+            result.append(library[target_lib][i])
+            index_pos_for_output += 1
+
+    return result
+
+# Ejemplo de uso
+index_ex = [-6, 5, 9, 1, 9, 1, 0, 1, -8, 4, -12]
+sorted_array = library_sort(index_ex)
+print("Arreglo ordenado:", sorted_array)
