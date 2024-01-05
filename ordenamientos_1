@@ -1,0 +1,114 @@
+
+
+
+
+x = 0
+##########################################################################
+##########################################################################
+##########################################################################
+def Insertion_sort(Vector):
+    for i in range(1,len(Vector)):
+        actual = Vector[i]
+        j = i
+        #Desplazamiento de los elementos de la matriz }
+        while j>0 and Vector[j-1]>actual:
+            Vector[j]=Vector[j-1]
+            j = j-1
+            #print(Vector)
+        #insertar el elemento en su lugar
+        Vector[j]=actual
+        #print("iteracion",i, Vector,)
+    return Vector,i
+##########################################################################
+##########################################################################
+##########################################################################
+##########################################################################
+def bubble_sort(Vector_1):
+    permutation = True
+    iteración = 0
+    while permutation == True:
+        permutation = False
+        iteración = iteración + 1
+        for actual in range(0, len(Vector_1) - iteración):
+            if Vector_1[actual] > Vector_1[actual + 1]:
+                permutation = True
+                # Intercambiamos los dos elementos
+                Vector_1[actual], Vector_1[actual + 1] = \
+                Vector_1[actual + 1],Vector_1[actual]
+                #print("paso",iteración,Vector_1)
+    return Vector_1,iteración 
+##########################################################################
+##########################################################################
+##########################################################################
+##########################################################################
+##########################################################################
+       
+
+def shell_sort(tabla, gap, debut):
+    iterations = 0  # Inicializador de contador de iteraciones
+    x = 0
+    for i in range(gap + debut, len(tabla), gap):
+        en_cours = tabla[i]
+        j = i
+        while j > 0 and tabla[j - gap] > en_cours:
+            tabla[j] = tabla[j - gap]
+            j = j - gap
+            iterations += 1  # contador de iteraciones
+        tabla[j] = en_cours
+      
+    
+    return iterations
+
+
+def sort_shells(tabla):
+    total_iterations = 0  # Inicializador de contador de iteraciones    
+    for gap in [6, 4, 3, 2, 1]:
+        for debut in range(0, gap):
+            iterations = shell_sort(tabla, gap, debut)
+            total_iterations += iterations
+    return tabla, total_iterations
+
+##########################################################################
+##########################################################################
+##########################################################################
+##########################################################################
+##########################################################################
+
+def fusion(izquierda, derecha): #fusion de las listas
+    resultat = [] #lista vacia
+    index_izquierda, index_derecha = 0, 0
+    iterations = 0  # Inicio de contador de iteraciones
+    while index_izquierda < len(izquierda) and index_derecha < len(derecha):        
+        if izquierda[index_izquierda] <= derecha[index_derecha]:
+            resultat.append(izquierda[index_izquierda])
+            index_izquierda += 1
+        else:
+            resultat.append(derecha[index_derecha])#llenado de lista de ls fusion|    
+            index_derecha += 1
+        iterations += 1  # Incremento de iteraciones
+
+    if izquierda:
+        resultat.extend(izquierda[index_izquierda:])
+    if derecha:
+        resultat.extend(derecha[index_derecha:])
+    
+    return resultat, iterations
+
+
+def ordenar_merch(m):
+    if len(m) <= 1:
+        return m, 0  # 
+    milieu = len(m) // 2
+    izquierda = m[:milieu]
+    derecha = m[milieu:]
+    izquierda, left_iterations = ordenar_merch(izquierda)
+    derecha, right_iterations = ordenar_merch(derecha)
+    fusion_result, merge_iterations = fusion(izquierda, derecha)
+    total_iterations = left_iterations + right_iterations + merge_iterations
+    return fusion_result, total_iterations
+
+
+print("Insertion Sort",Insertion_sort([551, 534, 380, 911, 216, 877, 31, 284, 360, 161, 781]), "\n\n") 
+print("Bubble Sort",bubble_sort([551, 534, 380, 911, 216, 877, 31, 284, 360, 161, 781]), "\n\n")
+print("Shell Sort",sort_shells([551, 534, 380, 911, 216, 877, 31, 284, 360, 161, 781]), "\n\n") 
+print("Merge Sort",ordenar_merch([551, 534, 380, 911, 216, 877, 31, 284, 360, 161, 781]), "\n\n")
